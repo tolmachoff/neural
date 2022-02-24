@@ -8,4 +8,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SOURCE main.cpp perceptron.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE})
-target_link_libraries(${PROJECT_NAME} pthread)
+target_link_libraries(${PROJECT_NAME} pthread boost_serialization boost_system)

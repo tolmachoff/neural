@@ -2,6 +2,7 @@
 
 #include <boost/numeric/ublas/matrix.hpp>
 
+using std::string;
 using boost::numeric::ublas::matrix;
 
 class Perceptron
@@ -12,6 +13,9 @@ public:
 
     matrix<double> forward(const matrix<double>& x) const;
     void learn(const matrix<double>& x, const matrix<double>& y);
+
+    void save(const string& filename) const;
+    void load(const string& filename);
 
 private:
     const int I;

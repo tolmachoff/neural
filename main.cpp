@@ -87,6 +87,8 @@ int main()
             perceptron.learn(lesson.x, lesson.y);
         }
     }
+
+    // perceptron.save("shit.txt");
     
     paint_perceptron(perceptron, "out.bmp");
 

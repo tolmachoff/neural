@@ -2,11 +2,16 @@
 
 #include <algorithm>
 #include <random>
+#include <fstream>
 #include <cmath>
+
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
 
 using namespace std;
 using namespace std::placeholders;
 using namespace boost::numeric::ublas;
+using namespace boost::archive;
 
 struct Perceptron::Impl
 {
@@ -98,4 +103,22 @@ void Perceptron::learn(const matrix<double>& x, const matrix<double>& y)
     d->b1 -= alpha * delta1;
     d->w0 -= alpha * gamma0;
     d->b0 -= alpha * delta0;
+}
+
+void Perceptron::save(const string& filename) const
+{
+    ofstream out(filename);
+    assert(out);
+
+    text_oarchive oa(out);
+    oa << d->w0 << d->b0 << d->w1 << d->b1;
+}
+
+void Perceptron::load(const string& filename)
+{
+    ifstream in(filename);
+    assert(in);
+
+    text_iarchive ia(in);
+    ia >> d->w0 >> d->b0 >> d->w1 >> d->b1;
 }
