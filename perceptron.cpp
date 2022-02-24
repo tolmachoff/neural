@@ -50,7 +50,7 @@ double f_(double x)
 }
 
 template <typename Func>
-matrix<double> apply_func(const matrix<double>& x, Func func)
+matrix<double> apply_func(Func func, const matrix<double>& x)
 {
     matrix<double> y(x.size1(), x.size2());
     transform(x.data().cbegin(), x.data().cend(), y.data().begin(), bind(func, _1));
@@ -74,23 +74,23 @@ Perceptron::~Perceptron()
 matrix<double> Perceptron::forward(const matrix<double>& x) const
 {
     matrix<double> h_ = prod(x, d->w0) + d->b0;
-    matrix<double> h = apply_func(h_, f);
+    matrix<double> h = apply_func(f, h_);
     matrix<double> o_ = prod(h, d->w1) + d->b1;
-    matrix<double> o = apply_func(o_, f);
+    matrix<double> o = apply_func(f, o_);
     return o;
 }
 
 void Perceptron::learn(const matrix<double>& x, const matrix<double>& y)
 {
     matrix<double> h_ = prod(x, d->w0) + d->b0;
-    matrix<double> h = apply_func(h_, f);
+    matrix<double> h = apply_func(f, h_);
     matrix<double> o_ = prod(h, d->w1) + d->b1;
-    matrix<double> o = apply_func(o_, f);
+    matrix<double> o = apply_func(f, o_);
     matrix<double> eps = y - o;
-    matrix<double> f_o_ = apply_func(o_, f_);
+    matrix<double> f_o_ = apply_func(f_, o_);
     matrix<double> delta1 = -2.0 * element_prod(eps, f_o_);
     matrix<double> gamma1 = prod(trans(h), delta1);
-    matrix<double> f_h_ = apply_func(h_, f_);
+    matrix<double> f_h_ = apply_func(f_, h_);
     matrix<double> delta0 = element_prod(f_h_, prod(delta1, trans(d->w1)));
     matrix<double> gamma0 = prod(trans(x), delta0);
 
