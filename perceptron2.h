@@ -2,11 +2,11 @@
 
 #include "i_neural.h"
 
-class Perceptron : public INeural
+class Perceptron2 : public INeural
 {
 public:
-    Perceptron(int I, int J, int K);
-    ~Perceptron() override;
+    Perceptron2(int I, int J, int K, int L);
+    ~Perceptron2() override;
 
     matrix<double> forward(const matrix<double>& x) const override;
     void learn(const matrix<double>& x, const matrix<double>& y) override;
@@ -18,6 +18,7 @@ private:
     const int I;
     const int J;
     const int K;
+    const int L;
     const double alpha;
 
     struct Impl;

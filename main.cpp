@@ -2,7 +2,7 @@
 #include <string>
 #include <random>
 
-#include "perceptron.h"
+#include "perceptron2.h"
 #include "BMP.h"
 
 using namespace std;
@@ -25,7 +25,7 @@ uint8_t to_color(double x)
     }
 }
 
-void paint_perceptron(const Perceptron& perceptron, const string& fn)
+void paint_perceptron(const INeural& neural, const string& fn)
 {
     const int IMAGE_SIZE = 500;
 
@@ -37,7 +37,7 @@ void paint_perceptron(const Perceptron& perceptron, const string& fn)
         {
             n(0) = static_cast<double>(i) / IMAGE_SIZE;
             n(1) = static_cast<double>(j) / IMAGE_SIZE;
-            auto o = perceptron.forward(n);
+            auto o = neural.forward(n);
             bmp.set_pixel(i, j, 0, 0, to_color(o(0)), 255);
         }
     }
@@ -52,7 +52,7 @@ struct Lesson
 
 int main()
 {
-    Perceptron perceptron(2, 5, 1);
+    Perceptron2 perceptron(2, 5, 5, 1);
 
     default_random_engine eng;
     uniform_real_distribution<double> dist(0.0, 1.0);

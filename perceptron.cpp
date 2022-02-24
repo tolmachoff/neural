@@ -1,4 +1,5 @@
 #include "perceptron.h"
+#include "sigmoid.h"
 
 #include <algorithm>
 #include <random>
@@ -43,16 +44,6 @@ struct Perceptron::Impl
     }
 
 };
-
-double f(double x)
-{
-    return 1.0 / (1.0 + exp(-x));
-}
-
-double f_(double x)
-{
-    return f(x) * (1.0 - f(x));
-}
 
 template <typename Func>
 matrix<double> apply_func(Func func, const matrix<double>& x)
