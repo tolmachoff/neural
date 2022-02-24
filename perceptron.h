@@ -8,6 +8,7 @@ class Perceptron
 {
 public:
     Perceptron(int I, int J, int K);
+    ~Perceptron();
 
     matrix<double> forward(const matrix<double>& x) const;
     void learn(const matrix<double>& x, const matrix<double>& y);

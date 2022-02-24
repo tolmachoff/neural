@@ -66,6 +66,11 @@ Perceptron::Perceptron(int I, int J, int K)
 {
 }
 
+Perceptron::~Perceptron()
+{
+    delete d;
+}
+
 matrix<double> Perceptron::forward(const matrix<double>& x) const
 {
     matrix<double> h_ = prod(x, d->w0) + d->b0;
