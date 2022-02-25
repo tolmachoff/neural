@@ -55,11 +55,13 @@ void Teacher::teach(int repeats, bool to_shuffle)
             percents = ++current_count * 100 / total_count;
             if (percents > prev_percents)
             {
-                cout << percents << "%" << endl;
+                cout << "|";
+                cout.flush();
                 prev_percents = percents;
             }
         }
     }
+    cout << endl;
     auto finish = chrono::high_resolution_clock::now();
     auto total_ms = chrono::duration_cast<chrono::milliseconds>(finish - start).count();
     auto per_one = static_cast<double>(chrono::duration_cast<chrono::microseconds>(finish - start).count()) / total_count;
