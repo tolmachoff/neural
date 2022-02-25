@@ -9,8 +9,7 @@ set(CMAKE_BUILD_TYPE Release)
 
 set(SOURCE 
     main.cpp 
-    perceptron.cpp 
-    # perceptron2.cpp 
+    feed_forward.cpp 
     sigmoid.cpp 
     teacher.cpp
     painter.cpp)

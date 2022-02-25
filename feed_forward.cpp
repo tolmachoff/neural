@@ -1,4 +1,4 @@
-#include "perceptron.h"
+#include "feed_forward.h"
 #include "sigmoid.h"
 
 #include <algorithm>
@@ -15,7 +15,7 @@ using namespace std::placeholders;
 using namespace boost::numeric;
 using namespace boost::archive;
 
-struct Perceptron::Impl
+struct FF::Impl
 {
     const int I;
     const int J;
@@ -65,19 +65,19 @@ ublas::vector<double> apply_func(Func func, const ublas::vector<double>& x)
     return y;
 }
 
-Perceptron::Perceptron(int I, int J, int K) : d(new Impl(I, J, K)) {}
+FF::FF(int I, int J, int K) : d(new Impl(I, J, K)) {}
 
-Perceptron::~Perceptron()
+FF::~FF()
 {
     delete d;
 }
 
-vector<int> Perceptron::get_sizes() const
+vector<int> FF::get_sizes() const
 {
     return {d->I, d->J, d->K};
 }
 
-ublas::vector<double> Perceptron::forward(const ublas::vector<double>& x) const
+ublas::vector<double> FF::forward(const ublas::vector<double>& x) const
 {
     ublas::vector<double> h_ = prod(x, d->w0) + d->b0;
     ublas::vector<double> h = apply_func(f, h_);
@@ -86,7 +86,7 @@ ublas::vector<double> Perceptron::forward(const ublas::vector<double>& x) const
     return o;
 }
 
-void Perceptron::learn(const ublas::vector<double>& x, const ublas::vector<double>& y)
+void FF::learn(const ublas::vector<double>& x, const ublas::vector<double>& y)
 {
     ublas::vector<double> h_ = prod(x, d->w0) + d->b0;
     ublas::vector<double> h = apply_func(f, h_);
@@ -106,7 +106,7 @@ void Perceptron::learn(const ublas::vector<double>& x, const ublas::vector<doubl
     d->b0 -= d->alpha * delta0;
 }
 
-void Perceptron::save(const string& filename) const
+void FF::save(const string& filename) const
 {
     ofstream out(filename);
     assert(out);
@@ -115,7 +115,7 @@ void Perceptron::save(const string& filename) const
     oa << d->w0 << d->b0 << d->w1 << d->b1;
 }
 
-void Perceptron::load(const string& filename)
+void FF::load(const string& filename)
 {
     ifstream in(filename);
     assert(in);

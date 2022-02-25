@@ -2,11 +2,11 @@
 
 #include "i_neural.h"
 
-class Perceptron : public INeural
+class FF : public INeural
 {
 public:
-    Perceptron(int I, int J, int K);
-    ~Perceptron() override;
+    FF(int I, int J, int K);
+    ~FF() override;
 
     vector<int> get_sizes() const override;
 

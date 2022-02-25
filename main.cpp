@@ -4,7 +4,7 @@
 #include <random>
 #include <algorithm>
 
-#include "perceptron.h"
+#include "feed_forward.h"
 #include "teacher.h"
 
 using namespace std;
@@ -136,10 +136,10 @@ void test(INeural& neural)
 
 int main()
 {
-    Perceptron perceptron(784, 256, 10);
+    FF ff(784, 256, 10);
 
-    // teach(perceptron);
-    test(perceptron);
+    // teach(ff);
+    test(ff);
 
     return 0;
 }
