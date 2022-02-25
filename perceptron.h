@@ -17,11 +17,6 @@ public:
     void load(const string& filename) override;
 
 private:
-    const int I;
-    const int J;
-    const int K;
-    const double alpha;
-
     struct Impl;
     Impl* d;
 

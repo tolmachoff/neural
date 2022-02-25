@@ -17,6 +17,12 @@ using namespace boost::archive;
 
 struct Perceptron::Impl
 {
+    const int I;
+    const int J;
+    const int K;
+
+    const double alpha;
+
     ublas::matrix<double> w0;
     ublas::vector<double> b0;
     ublas::matrix<double> w1;
@@ -27,7 +33,11 @@ struct Perceptron::Impl
 
 
     Impl(int I, int J, int K)
-        : w0(I, J)
+        : I(I)
+        , J(J)
+        , K(K)
+        , alpha(0.15)
+        , w0(I, J)
         , b0(J)
         , w1(J, K)
         , b1(K)
@@ -55,14 +65,7 @@ ublas::vector<double> apply_func(Func func, const ublas::vector<double>& x)
     return y;
 }
 
-Perceptron::Perceptron(int I, int J, int K)
-    : I(I)
-    , J(J)
-    , K(K)
-    , alpha(0.15)
-    , d(new Impl(I, J, K))
-{
-}
+Perceptron::Perceptron(int I, int J, int K) : d(new Impl(I, J, K)) {}
 
 Perceptron::~Perceptron()
 {
@@ -71,7 +74,7 @@ Perceptron::~Perceptron()
 
 vector<int> Perceptron::get_sizes() const
 {
-    return {I, J, K};
+    return {d->I, d->J, d->K};
 }
 
 ublas::vector<double> Perceptron::forward(const ublas::vector<double>& x) const
@@ -97,10 +100,10 @@ void Perceptron::learn(const ublas::vector<double>& x, const ublas::vector<doubl
     ublas::vector<double> delta0 = element_prod(f_h_, prod(delta1, trans(d->w1)));
     ublas::matrix<double> gamma0 = outer_prod(x, delta0);
 
-    d->w1 -= alpha * gamma1;
-    d->b1 -= alpha * delta1;
-    d->w0 -= alpha * gamma0;
-    d->b0 -= alpha * delta0;
+    d->w1 -= d->alpha * gamma1;
+    d->b1 -= d->alpha * delta1;
+    d->w0 -= d->alpha * gamma0;
+    d->b0 -= d->alpha * delta0;
 }
 
 void Perceptron::save(const string& filename) const
