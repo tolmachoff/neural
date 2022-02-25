@@ -17,7 +17,7 @@ using namespace boost::archive;
 
 struct FF::Impl
 {
-    const double alpha;
+    const double alpha = 0.15;
 
     ublas::matrix<double> w0;
     ublas::vector<double> b0;
@@ -28,8 +28,7 @@ struct FF::Impl
     uniform_real_distribution<double> dist;
 
     Impl(int I, int J, int K)
-        : alpha(0.15)
-        , w0(I, J)
+        : w0(I, J)
         , b0(J)
         , w1(J, K)
         , b1(K)
@@ -41,7 +40,7 @@ struct FF::Impl
         randomize(b1);
     }
 
-    Impl() : alpha(0.15) {}
+    Impl() = default;
 
     template <typename Container>
     void randomize(Container& m)
