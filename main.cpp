@@ -4,46 +4,10 @@
 
 #include "perceptron2.h"
 #include "teacher.h"
-#include "BMP.h"
+#include "painter.h"
 
 using namespace std;
 using namespace boost::numeric::ublas;
-
-uint8_t to_color(double x)
-{
-    double c = 255.0 * x;
-    if (c < 0)
-    {
-        return 0;
-    }
-    else if (c > 255)
-    {
-        return 255;
-    }
-    else
-    {
-        return static_cast<uint8_t>(c);
-    }
-}
-
-void paint_perceptron(const INeural& neural, const string& fn)
-{
-    const int IMAGE_SIZE = 500;
-
-    BMP bmp(IMAGE_SIZE, IMAGE_SIZE);
-    matrix<double> n(1, 2);
-    for (int i = 0; i < IMAGE_SIZE; ++i)
-    {
-        for (int j = 0; j < IMAGE_SIZE; ++j)
-        {
-            n(0) = static_cast<double>(i) / IMAGE_SIZE;
-            n(1) = static_cast<double>(j) / IMAGE_SIZE;
-            auto o = neural.forward(n);
-            bmp.set_pixel(i, j, 0, 0, to_color(o(0)), 255);
-        }
-    }
-    bmp.write(fn.c_str());
-}
 
 int main()
 {
@@ -76,8 +40,8 @@ int main()
     teacher.teach(1000);
 
     // perceptron.save("shit.txt");
-    
-    paint_perceptron(perceptron, "out.bmp");
+
+    Painter::paint(perceptron, "out.bmp");
 
     return 0;
 }

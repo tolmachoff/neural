@@ -10,7 +10,8 @@ set(SOURCE
     perceptron.cpp 
     perceptron2.cpp 
     sigmoid.cpp 
-    teacher.cpp)
+    teacher.cpp
+    painter.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCE})
 target_link_libraries(${PROJECT_NAME} pthread boost_serialization boost_system)
