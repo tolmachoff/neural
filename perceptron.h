@@ -8,8 +8,8 @@ public:
     Perceptron(int I, int J, int K);
     ~Perceptron() override;
 
-    matrix<double> forward(const matrix<double>& x) const override;
-    void learn(const matrix<double>& x, const matrix<double>& y) override;
+    ublas::vector<double> forward(const ublas::vector<double>& x) const override;
+    void learn(const ublas::vector<double>& x, const ublas::vector<double>& y) override;
 
     void save(const string& filename) const override;
     void load(const string& filename) override;

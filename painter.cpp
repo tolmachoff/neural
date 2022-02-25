@@ -27,7 +27,7 @@ void Painter::paint(INeural& neural, const string& filename, int size)
 {
     BMP bmp(size, size);
 
-    matrix<double> n(1, 2);
+    ublas::vector<double> n(2);
     for (int i = 0; i < size; ++i)
     {
         for (int j = 0; j < size; ++j)

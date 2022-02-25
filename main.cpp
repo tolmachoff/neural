@@ -8,7 +8,7 @@
 #include "teacher.h"
 
 using namespace std;
-using namespace boost::numeric::ublas;
+using namespace boost::numeric;
 
 void learn_circle(INeural& neural)
 {
@@ -19,11 +19,11 @@ void learn_circle(INeural& neural)
 
     for (int i = 0; i < 100; ++i)
     {
-        matrix<double> n(1, 2);
+        ublas::vector<double> n(2);
         n(0) = dist(eng);
         n(1) = dist(eng);
 
-        matrix<double> d(1, 1);
+        ublas::vector<double> d(1);
         if (pow(n(0) - 0.5, 2) + pow(n(1) - 0.5, 2) < 0.2)
         {
             d(0) = 1.0;
@@ -52,7 +52,7 @@ void teach(INeural& neural)
 
     while (true)
     {
-        matrix<double> y(1, 10);
+        ublas::vector<double> y(10);
         int ans;
         if (!(in >> ans))
         {
@@ -60,8 +60,8 @@ void teach(INeural& neural)
         }
         y(ans) = 1.0;
 
-        matrix<double> x(1, 784);
-        for (double& val : x.data())
+        ublas::vector<double> x(784);
+        for (double& val : x)
         {
             in >> val; 
         }
@@ -96,26 +96,26 @@ void test(INeural& neural)
         {
             break;
         }
-        matrix<double> d(1, 10);
+        ublas::vector<double> d(10);
         d(ans) = 1.0;
         
-        matrix<double> x(1, 784);
+        ublas::vector<double> x(784);
         for (double& val : x.data())
         {
             in >> val; 
         }
 
-        matrix<double> y = neural.forward(x);
+        ublas::vector<double> y = neural.forward(x);
 
-        matrix<double> eps = d - y;
-        auto it = find_if(eps.data().begin(), 
-                          eps.data().end(), 
-                          [](double x)
+        ublas::vector<double> eps = d - y;
+        auto it = find_if(eps.begin(), 
+                          eps.end(), 
+                            [](double x)
                             {
                                 return abs(x) > 0.5;
                             });
         ++total_count;
-        if (it == eps.data().end())
+        if (it == eps.end())
         {
             ++right_count;
         }

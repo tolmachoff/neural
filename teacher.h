@@ -4,8 +4,8 @@
 
 struct Lesson
 {
-    matrix<double> x;
-    matrix<double> y;
+    ublas::vector<double> x;
+    ublas::vector<double> y;
 };
 
 class Teacher

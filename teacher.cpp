@@ -11,7 +11,7 @@ using namespace std;
 struct Teacher::Impl
 {
     INeural& neural;
-    std::vector<Lesson> lessons;
+    vector<Lesson> lessons;
     default_random_engine gen;
 
     Impl(INeural& neural) : neural(neural) {}

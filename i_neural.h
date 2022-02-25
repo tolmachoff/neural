@@ -1,17 +1,17 @@
 #pragma once
 
-#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/vector.hpp>
 
 using std::string;
-using boost::numeric::ublas::matrix;
+using namespace boost::numeric;
 
 class INeural
 {
 public:
     virtual ~INeural() = default;
 
-    virtual matrix<double> forward(const matrix<double>& x) const = 0;
-    virtual void learn(const matrix<double>& x, const matrix<double>& y) = 0;
+    virtual ublas::vector<double> forward(const ublas::vector<double>& x) const = 0;
+    virtual void learn(const ublas::vector<double>& x, const ublas::vector<double>& y) = 0;
 
     virtual void save(const string& filename) const = 0;
     virtual void load(const string& filename) = 0;

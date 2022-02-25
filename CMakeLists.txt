@@ -10,7 +10,7 @@ set(CMAKE_BUILD_TYPE Release)
 set(SOURCE 
     main.cpp 
     perceptron.cpp 
-    perceptron2.cpp 
+    # perceptron2.cpp 
     sigmoid.cpp 
     teacher.cpp
     painter.cpp)
