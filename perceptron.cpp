@@ -55,14 +55,6 @@ ublas::vector<double> apply_func(Func func, const ublas::vector<double>& x)
     return y;
 }
 
-template <typename Func>
-ublas::matrix<double> apply_func(Func func, const ublas::matrix<double>& x)
-{
-    ublas::matrix<double> y(x.size1(), x.size2());
-    transform(x.data().cbegin(), x.data().cend(), y.data().begin(), bind(func, _1));
-    return y;
-}
-
 Perceptron::Perceptron(int I, int J, int K)
     : I(I)
     , J(J)
@@ -75,6 +67,11 @@ Perceptron::Perceptron(int I, int J, int K)
 Perceptron::~Perceptron()
 {
     delete d;
+}
+
+vector<int> Perceptron::get_sizes() const
+{
+    return {I, J, K};
 }
 
 ublas::vector<double> Perceptron::forward(const ublas::vector<double>& x) const

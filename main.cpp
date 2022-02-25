@@ -14,6 +14,9 @@ void learn_circle(INeural& neural)
 {
     Teacher teacher(neural);
 
+    assert(neural.get_sizes().front() == 2);
+    assert(neural.get_sizes().back() == 1);
+
     default_random_engine eng;
     uniform_real_distribution<double> dist(0.0, 1.0);
 
@@ -42,6 +45,9 @@ void learn_circle(INeural& neural)
 void teach(INeural& neural)
 {
     Teacher teacher(neural);
+
+    assert(neural.get_sizes().front() == 784);
+    assert(neural.get_sizes().back() == 10);
 
     ifstream in("../datasets/lib_MNIST.txt");
     assert(in);
@@ -78,6 +84,9 @@ void teach(INeural& neural)
 
 void test(INeural& neural)
 {
+    assert(neural.get_sizes().front() == 784);
+    assert(neural.get_sizes().back() == 10);
+
     neural.load("shit.txt");
 
     ifstream in("../datasets/lib_10k.txt");
