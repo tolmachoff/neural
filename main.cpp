@@ -3,6 +3,7 @@
 #include <random>
 
 #include "perceptron2.h"
+#include "teacher.h"
 #include "BMP.h"
 
 using namespace std;
@@ -44,24 +45,16 @@ void paint_perceptron(const INeural& neural, const string& fn)
     bmp.write(fn.c_str());
 }
 
-struct Lesson
-{
-    matrix<double> x;
-    matrix<double> y;
-};
-
 int main()
 {
     Perceptron2 perceptron(2, 5, 5, 1);
 
+    Teacher teacher(perceptron);
+
     default_random_engine eng;
     uniform_real_distribution<double> dist(0.0, 1.0);
 
-    const int N         = 100;
-    const int REP       = 1000;
-
-    std::vector<Lesson> lessons;
-    for (int i = 0; i < N; ++i)
+    for (int i = 0; i < 100; ++i)
     {
         matrix<double> n(1, 2);
         n(0) = dist(eng);
@@ -77,16 +70,10 @@ int main()
             d(0) = 0.0;
         }
 
-        lessons.push_back({n, d});
+        teacher.add_lesson({n, d});
     }
 
-    for (int i = 0; i < REP; ++i)
-    {
-        for(const Lesson& lesson : lessons)
-        {
-            perceptron.learn(lesson.x, lesson.y);
-        }
-    }
+    teacher.teach(1000);
 
     // perceptron.save("shit.txt");
     
