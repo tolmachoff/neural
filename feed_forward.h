@@ -5,16 +5,17 @@
 class FF : public INeural
 {
 public:
-    FF(int I, int J, int K);
+    FF(size_t I, size_t J, size_t K);
+    FF(const string& filename);
+
     ~FF() override;
 
-    vector<int> get_sizes() const override;
+    vector<size_t> get_sizes() const override;
 
     ublas::vector<double> forward(const ublas::vector<double>& x) const override;
     void learn(const ublas::vector<double>& x, const ublas::vector<double>& y) override;
 
     void save(const string& filename) const override;
-    void load(const string& filename) override;
 
 private:
     struct Impl;

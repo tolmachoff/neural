@@ -17,10 +17,6 @@ using namespace boost::archive;
 
 struct FF::Impl
 {
-    const int I;
-    const int J;
-    const int K;
-
     const double alpha;
 
     ublas::matrix<double> w0;
@@ -31,12 +27,8 @@ struct FF::Impl
     default_random_engine eng;
     uniform_real_distribution<double> dist;
 
-
     Impl(int I, int J, int K)
-        : I(I)
-        , J(J)
-        , K(K)
-        , alpha(0.15)
+        : alpha(0.15)
         , w0(I, J)
         , b0(J)
         , w1(J, K)
@@ -48,6 +40,8 @@ struct FF::Impl
         randomize(w1);
         randomize(b1);
     }
+
+    Impl() : alpha(0.15) {}
 
     template <typename Container>
     void randomize(Container& m)
@@ -65,16 +59,25 @@ ublas::vector<double> apply_func(Func func, const ublas::vector<double>& x)
     return y;
 }
 
-FF::FF(int I, int J, int K) : d(new Impl(I, J, K)) {}
+FF::FF(size_t I, size_t J, size_t K) : d(new Impl(I, J, K)) {}
+
+FF::FF(const string& filename) : d(new Impl)
+{
+    ifstream in(filename);
+    assert(in);
+
+    text_iarchive ia(in);
+    ia >> d->w0 >> d->b0 >> d->w1 >> d->b1;
+}
 
 FF::~FF()
 {
     delete d;
 }
 
-vector<int> FF::get_sizes() const
+vector<size_t> FF::get_sizes() const
 {
-    return {d->I, d->J, d->K};
+    return {d->w0.size1(), d->w0.size2(), d->w1.size2()};
 }
 
 ublas::vector<double> FF::forward(const ublas::vector<double>& x) const
@@ -113,13 +116,4 @@ void FF::save(const string& filename) const
 
     text_oarchive oa(out);
     oa << d->w0 << d->b0 << d->w1 << d->b1;
-}
-
-void FF::load(const string& filename)
-{
-    ifstream in(filename);
-    assert(in);
-
-    text_iarchive ia(in);
-    ia >> d->w0 >> d->b0 >> d->w1 >> d->b1;
 }

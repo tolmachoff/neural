@@ -10,12 +10,11 @@
 using namespace std;
 using namespace boost::numeric;
 
-void learn_circle(INeural& neural)
+void learn_circle()
 {
-    Teacher teacher(neural);
+    FF neural(2, 5, 1);
 
-    assert(neural.get_sizes().front() == 2);
-    assert(neural.get_sizes().back() == 1);
+    Teacher teacher(neural);
 
     default_random_engine eng;
     uniform_real_distribution<double> dist(0.0, 1.0);
@@ -42,12 +41,11 @@ void learn_circle(INeural& neural)
     teacher.teach(1000);
 }
 
-void teach(INeural& neural)
+void teach()
 {
-    Teacher teacher(neural);
+    FF neural(784, 256, 10);
 
-    assert(neural.get_sizes().front() == 784);
-    assert(neural.get_sizes().back() == 10);
+    Teacher teacher(neural);
 
     ifstream in("../datasets/lib_MNIST.txt");
     assert(in);
@@ -82,12 +80,12 @@ void teach(INeural& neural)
     neural.save("shit.txt");
 }
 
-void test(INeural& neural)
+void test()
 {
+    FF neural("shit.txt");
+
     assert(neural.get_sizes().front() == 784);
     assert(neural.get_sizes().back() == 10);
-
-    neural.load("shit.txt");
 
     ifstream in("../datasets/lib_10k.txt");
     assert(in);
@@ -136,10 +134,8 @@ void test(INeural& neural)
 
 int main()
 {
-    FF ff(784, 256, 10);
-
-    // teach(ff);
-    test(ff);
+    // teach();
+    test();
 
     return 0;
 }
