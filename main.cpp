@@ -1,47 +1,106 @@
 #include <iostream>
+#include <fstream>
 #include <string>
-#include <random>
+#include <algorithm>
 
-#include "perceptron2.h"
+#include "perceptron.h"
 #include "teacher.h"
-#include "painter.h"
 
 using namespace std;
 using namespace boost::numeric::ublas;
 
-int main()
+void teach(INeural& neural)
 {
-    Perceptron2 perceptron(2, 5, 5, 1);
+    Teacher teacher(neural);
 
-    Teacher teacher(perceptron);
+    ifstream in("../datasets/lib_MNIST.txt");
+    assert(in);
 
-    default_random_engine eng;
-    uniform_real_distribution<double> dist(0.0, 1.0);
+    string dataset_name;
+    getline(in, dataset_name);
+    cout << "Dataset name: " << dataset_name << endl;
 
-    for (int i = 0; i < 100; ++i)
+    while (true)
     {
-        matrix<double> n(1, 2);
-        n(0) = dist(eng);
-        n(1) = dist(eng);
-
-        matrix<double> d(1, 1);
-        if (pow(n(0) - 0.5, 2) + pow(n(1) - 0.5, 2) < 0.2)
+        matrix<double> y(1, 10);
+        int ans;
+        if (!(in >> ans))
         {
-            d(0) = 1.0;
+            break;
         }
-        else
+        y(ans) = 1.0;
+
+        matrix<double> x(1, 784);
+        for (double& val : x.data())
         {
-            d(0) = 0.0;
+            in >> val; 
         }
 
-        teacher.add_lesson({n, d});
+        teacher.add_lesson({x, y});
     }
 
-    teacher.teach(1000);
+    cout << "Read " << teacher.get_count() << " samples" << endl;
 
-    // perceptron.save("shit.txt");
+    teacher.teach(1);
 
-    Painter::paint(perceptron, "out.bmp");
+    neural.save("shit.txt");
+}
+
+void test(INeural& neural)
+{
+    neural.load("shit.txt");
+
+    ifstream in("../datasets/lib_10k.txt");
+    assert(in);
+
+    string dataset_name;
+    getline(in, dataset_name);
+    cout << "Dataset name: " << dataset_name << endl;
+
+    size_t total_count = 0;
+    size_t right_count = 0;
+    while (true)
+    {
+        int ans;
+        if (!(in >> ans))
+        {
+            break;
+        }
+        matrix<double> d(1, 10);
+        d(ans) = 1.0;
+        
+        matrix<double> x(1, 784);
+        for (double& val : x.data())
+        {
+            in >> val; 
+        }
+
+        matrix<double> y = neural.forward(x);
+
+        matrix<double> eps = d - y;
+        auto it = find_if(eps.data().begin(), 
+                          eps.data().end(), 
+                          [](double x)
+                            {
+                                return abs(x) > 0.5;
+                            });
+        ++total_count;
+        if (it == eps.data().end())
+        {
+            ++right_count;
+        }
+    }
+
+    cout << "Tested at " << total_count << " samples" << endl;
+    cout << right_count << " answers is right!" << endl;
+}
+
+int main()
+{
+    Perceptron perceptron(784, 256, 10);
+
+    // teach(perceptron);
+    test(perceptron);
 
     return 0;
 }

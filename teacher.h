@@ -15,6 +15,7 @@ public:
     ~Teacher();
 
     void add_lesson(const Lesson& lesson);
+    int get_count() const;
     void teach(int repeats, bool to_shuffle = false);
 
 private:
