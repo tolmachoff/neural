@@ -17,8 +17,6 @@ using namespace boost::archive;
 
 struct FF::Impl
 {
-    const double alpha = 0.15;
-
     ublas::matrix<double> w0;
     ublas::vector<double> b0;
     ublas::matrix<double> w1;
@@ -102,10 +100,12 @@ void FF::learn(const ublas::vector<double>& x, const ublas::vector<double>& y)
     ublas::vector<double> delta0 = element_prod(f_h_, prod(delta1, trans(d->w1)));
     ublas::matrix<double> gamma0 = outer_prod(x, delta0);
 
-    d->w1 -= d->alpha * gamma1;
-    d->b1 -= d->alpha * delta1;
-    d->w0 -= d->alpha * gamma0;
-    d->b0 -= d->alpha * delta0;
+    const double alpha = 0.15;
+
+    d->w1 -= alpha * gamma1;
+    d->b1 -= alpha * delta1;
+    d->w0 -= alpha * gamma0;
+    d->b0 -= alpha * delta0;
 }
 
 void FF::save(const string& filename) const

@@ -10,6 +10,7 @@ set(CMAKE_BUILD_TYPE Release)
 set(SOURCE 
     main.cpp 
     feed_forward.cpp 
+    deep_feed_forward.cpp
     sigmoid.cpp 
     teacher.cpp
     painter.cpp)

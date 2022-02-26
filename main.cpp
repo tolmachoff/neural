@@ -5,14 +5,16 @@
 #include <algorithm>
 
 #include "feed_forward.h"
+#include "deep_feed_forward.h"
 #include "teacher.h"
+#include "painter.h"
 
 using namespace std;
 using namespace boost::numeric;
 
 void learn_circle()
 {
-    FF neural(2, 5, 1);
+    DFF neural {2, 5, 5, 1};
 
     Teacher teacher(neural);
 
@@ -39,6 +41,8 @@ void learn_circle()
     }
 
     teacher.teach(1000);
+
+    Painter::paint(neural, "out.bmp");
 }
 
 void teach()
@@ -134,8 +138,9 @@ void test()
 
 int main()
 {
+    learn_circle();
     // teach();
-    test();
+    // test();
 
     return 0;
 }
