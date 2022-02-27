@@ -60,7 +60,7 @@ void teach()
 
     while (true)
     {
-        ublas::vector<double> y(10);
+        ublas::vector<double> y(10, 0.0);
         int ans;
         if (!(in >> ans))
         {
@@ -107,7 +107,7 @@ void test()
         {
             break;
         }
-        ublas::vector<double> d(10);
+        ublas::vector<double> d(10, 0.0);
         d(ans) = 1.0;
         
         ublas::vector<double> x(784);
@@ -118,15 +118,10 @@ void test()
 
         ublas::vector<double> y = neural.predict(x);
 
-        ublas::vector<double> eps = d - y;
-        auto it = find_if(eps.begin(), 
-                          eps.end(), 
-                            [](double x)
-                            {
-                                return abs(x) > 0.5;
-                            });
+        auto it = max_element(y.begin(), y.end());
+
         ++total_count;
-        if (it == eps.end())
+        if (it - y.begin() == ans)
         {
             ++right_count;
         }
@@ -138,9 +133,9 @@ void test()
 
 int main()
 {
-    learn_circle();
+    // learn_circle();
     // teach();
-    // test();
+    test();
 
     return 0;
 }
