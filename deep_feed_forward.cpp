@@ -173,14 +173,14 @@ vector<size_t> DFF::get_sizes() const
     return d->sizes;
 }
 
-ublas::vector<double> DFF::forward(const ublas::vector<double>& x) const
+ublas::vector<double> DFF::predict(const ublas::vector<double>& x) const
 {
     DFFData data(d->layers);
     data.forward(x);
     return data.fwd.back().o;
 }
 
-void DFF::learn(const ublas::vector<double>& x, const ublas::vector<double>& y)
+void DFF::fit(const ublas::vector<double>& x, const ublas::vector<double>& y)
 {
     DFFData data(d->layers);
     data.forward(x);

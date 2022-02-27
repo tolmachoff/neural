@@ -2,7 +2,7 @@
 
 #include "i_neural.h"
 
-struct Lesson
+struct Example
 {
     ublas::vector<double> x;
     ublas::vector<double> y;
@@ -14,9 +14,9 @@ public:
     Teacher(INeural& neural);
     ~Teacher();
 
-    void add_lesson(const Lesson& lesson);
+    void add_example(const Example& example);
     int get_count() const;
-    void teach(int repeats, bool to_shuffle = false);
+    void teach(int epochs, bool to_shuffle = false);
 
 private:
     struct Impl;

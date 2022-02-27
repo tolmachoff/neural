@@ -34,7 +34,7 @@ void Painter::paint(INeural& neural, const string& filename, int size)
         {
             n(0) = static_cast<double>(i) / size;
             n(1) = static_cast<double>(j) / size;
-            auto o = neural.forward(n);
+            auto o = neural.predict(n);
             bmp.set_pixel(i, j, 0, 0, to_color(o(0)), 255);
         }
     }

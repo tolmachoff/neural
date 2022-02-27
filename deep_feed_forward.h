@@ -14,8 +14,8 @@ public:
 
     vector<size_t> get_sizes() const override;
 
-    ublas::vector<double> forward(const ublas::vector<double>& x) const override;
-    void learn(const ublas::vector<double>& x, const ublas::vector<double>& y) override;
+    ublas::vector<double> predict(const ublas::vector<double>& x) const override;
+    void fit(const ublas::vector<double>& x, const ublas::vector<double>& y) override;
 
     void save(const string& filename) const override;
 

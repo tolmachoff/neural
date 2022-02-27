@@ -11,7 +11,7 @@ using namespace std;
 struct Teacher::Impl
 {
     INeural& neural;
-    vector<Lesson> lessons;
+    vector<Example> examples;
     default_random_engine gen;
 
     Impl(INeural& neural) : neural(neural) {}
@@ -24,19 +24,19 @@ Teacher::~Teacher()
     delete d;
 }
 
-void Teacher::add_lesson(const Lesson& lesson)
+void Teacher::add_example(const Example& example)
 {
-    d->lessons.emplace_back(lesson);
+    d->examples.emplace_back(example);
 }
 
 int Teacher::get_count() const
 {
-    return d->lessons.size();
+    return d->examples.size();
 }
 
 void Teacher::teach(int repeats, bool to_shuffle)
 {
-    size_t total_count = repeats * d->lessons.size();
+    size_t total_count = repeats * d->examples.size();
     size_t current_count = 0;
     int percents = 0;
     int prev_percents = -1;
@@ -45,12 +45,12 @@ void Teacher::teach(int repeats, bool to_shuffle)
     {
         if (to_shuffle)
         {
-            shuffle(d->lessons.begin(), d->lessons.end(), d->gen);
+            shuffle(d->examples.begin(), d->examples.end(), d->gen);
         }
 
-        for (const Lesson& lesson : d->lessons)
+        for (const Example& lesson : d->examples)
         {
-            d->neural.learn(lesson.x, lesson.y);
+            d->neural.fit(lesson.x, lesson.y);
 
             percents = ++current_count * 100 / total_count;
             if (percents > prev_percents)

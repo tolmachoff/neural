@@ -37,7 +37,7 @@ void learn_circle()
             d(0) = 0.0;
         }
 
-        teacher.add_lesson({n, d});
+        teacher.add_example({n, d});
     }
 
     teacher.teach(1000);
@@ -74,7 +74,7 @@ void teach()
             in >> val; 
         }
 
-        teacher.add_lesson({x, y});
+        teacher.add_example({x, y});
     }
 
     cout << "Read " << teacher.get_count() << " samples" << endl;
@@ -116,7 +116,7 @@ void test()
             in >> val; 
         }
 
-        ublas::vector<double> y = neural.forward(x);
+        ublas::vector<double> y = neural.predict(x);
 
         ublas::vector<double> eps = d - y;
         auto it = find_if(eps.begin(), 

@@ -77,7 +77,7 @@ vector<size_t> FF::get_sizes() const
     return {d->w0.size1(), d->w0.size2(), d->w1.size2()};
 }
 
-ublas::vector<double> FF::forward(const ublas::vector<double>& x) const
+ublas::vector<double> FF::predict(const ublas::vector<double>& x) const
 {
     ublas::vector<double> h_ = prod(x, d->w0) + d->b0;
     ublas::vector<double> h = apply_func(f, h_);
@@ -86,7 +86,7 @@ ublas::vector<double> FF::forward(const ublas::vector<double>& x) const
     return o;
 }
 
-void FF::learn(const ublas::vector<double>& x, const ublas::vector<double>& y)
+void FF::fit(const ublas::vector<double>& x, const ublas::vector<double>& y)
 {
     ublas::vector<double> h_ = prod(x, d->w0) + d->b0;
     ublas::vector<double> h = apply_func(f, h_);
